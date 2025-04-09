@@ -31,7 +31,8 @@ import os
 os.makedirs("payslips", exist_ok=True)
 
 # Generate payslips and send emails
-
+# Make sure to replace 'Email' and 'password' with your actual email and password
+# Note: For security reasons, consider using environment variables or a secure vault for storing credentials.
 yag = yagmail.SMTP(user="Email", password="password")
 
 def send_email(row, pdf_path):
