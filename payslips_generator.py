@@ -1,6 +1,15 @@
 import pandas as pd
 from fpdf import FPDF
 import yagmail
+import os
+
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv() 
+
+SENDER_EMAIL = os.getenv("SENDER_EMAIL")
+EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 
 df = pd.read_excel("employees.xlsx")  # Make sure the file is in the same directory
 df['Net Salary'] = df['Basic Salary'] + df['Allowances'] - df['Deductions']
@@ -33,11 +42,11 @@ os.makedirs("payslips", exist_ok=True)
 # Generate payslips and send emails
 # Make sure to replace 'Email' and 'password' with your actual email and password
 # Note: For security reasons, consider using environment variables or a secure vault for storing credentials.
-yag = yagmail.SMTP(user="Email", password="password")
+yag = yagmail.SMTP(user=SENDER_EMAIL, password=EMAIL_PASSWORD)
 
 def send_email(row, pdf_path):
     subject = "Your Payslip for This Month"
-    body = f"Dear {row['Name']},\\n\\nPlease find your payslip attached.\\n\\nRegards, HR"
+    body = f"Dear {row['Name']},\nPlease find your payslip attached.\nRegards, HR"
     
     yag.send(
         to=row["Email"],
